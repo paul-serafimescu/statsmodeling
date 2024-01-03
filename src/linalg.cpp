@@ -48,6 +48,36 @@ namespace matrix
         return Matrix(columns);
     }
 
+    const Matrix from(std::initializer_list<std::initializer_list<double>> lst)
+    {
+        std::vector<std::vector<double>> columns(lst.size());
+        size_t i = 0;
+        for (const auto& l : lst) {
+            columns[i++] = std::vector<double>(l);
+        }
+
+        return Matrix(columns);
+    }
+
+    const Matrix Matrix::augment_left(double value) const
+    {
+        auto dim = get_dim();
+        auto c = matrix::from_zeroes(dim.rows, dim.cols + 1);
+
+        #pragma omp parallel for schedule(static)
+        for (size_t i = 0; i < dim.rows; i++) {
+            for (size_t j = 0; j < dim.cols + 1; j++) {
+                if (j == 0) {
+                    c._cols[i][j] = value;
+                } else {
+                    c._cols[i][j] = _cols[i][j - 1];
+                }
+            }
+        }
+
+        return c;
+    }
+
     Matrix from_zeroes(size_t N, size_t M) 
     {
         std::vector<std::vector<double>> columns(N);
@@ -162,10 +192,10 @@ namespace matrix
         auto dimensions = get_dim();
         auto c = matrix::from_zeroes(dimensions.cols, dimensions.rows);
 
-        #pragma omp parallel for schedule(guided)
-        for (size_t i = 0; i < dimensions.cols; i++) {
-            for (size_t j = 0; j < dimensions.rows; j++) {
-                c._cols[i][j] = _cols[j][i];
+        #pragma omp parallel for schedule(static)
+        for (size_t i = 0; i < dimensions.rows; i++) {
+            for (size_t j = 0; j < dimensions.cols; j++) {
+                c._cols[j][i] = _cols[i][j];
             }
         }
 
@@ -188,7 +218,7 @@ namespace matrix
         // Gauss-Jordan Elimination
         for (size_t i = 0; i < N; i++) {
             if (a[i][i] == 0.0) throw; // inversion not possible
-            #pragma omp parallel for schedule(guided)
+            // #pragma omp parallel for schedule(guided)
             for (size_t j = 0; j < N; j++) {
                 if (i != j) {
                     double r = a[j][i] / a[i][i];
@@ -249,18 +279,20 @@ namespace matrix
         return c;
     }
 
-    const Matrix Matrix::operator*(const Matrix &rhs)
+    const Matrix Matrix::operator*(const Matrix &rhs) const
     {
-        auto c = matrix::from_zeroes(_cols.size(), rhs._cols[0].size());
+        auto lhs_dim = get_dim();
+        auto rhs_dim = rhs.get_dim();
 
+        assert(lhs_dim.cols == rhs_dim.rows); // make sure this is valid
+
+        auto c = matrix::from_zeroes(lhs_dim.rows, rhs_dim.cols);
         #pragma omp parallel for schedule(static)
-        for (size_t i = 0; i < _cols.size(); i++) {
-            for (size_t k = 0; k < _cols[0].size(); k++) {
-                auto reg = 0.0;
-                for (size_t j = 0; j < rhs._cols[0].size(); j++) {
-                    reg += _cols[i][k] * rhs._cols[k][j];
+        for (size_t i = 0; i < lhs_dim.rows; i++) {
+            for (size_t k = 0; k < lhs_dim.cols; k++) {
+                for (size_t j = 0; j < rhs_dim.cols; j++) {
+                    c._cols[i][j] += _cols[i][k] * rhs._cols[k][j];
                 }
-                c._cols[i][k] += reg;
             }
         }
 

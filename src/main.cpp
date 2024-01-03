@@ -1,6 +1,10 @@
 #include <iostream>
-#include <linalg.hpp>
 #include <assert.h>
+
+#include "linalg.hpp"
+#include "OLS.hpp"
+
+using statsmodeling::OLS;
 
 const int N = 2;
 const int M = 5;
@@ -8,9 +12,22 @@ const int P = 5;
 
 int main(void)
 {
-    auto A = matrix::from_random(N, N, 10);
+    auto y = matrix::from({
+        { 3 },
+        { 6 },
+        { 9 },
+        { 12 }
+    });
 
-    std::cout << A.to_string() << std::endl;
-    std::cout << A.inverse().to_string() << std::endl;
+    auto X = matrix::from({
+        { 0 },
+        { 1 },
+        { 2 },
+        { 3 }
+    });
+
+    auto reg = OLS(true);
+    reg.fit(X, y);
+
     return EXIT_SUCCESS;
 }
