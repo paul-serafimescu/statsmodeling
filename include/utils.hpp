@@ -3,8 +3,13 @@
 
 #include <cmath>
 #include <vector>
-
+#include <optional>
+#include <map>
 #include <omp.h>
+
+#include <linalg.hpp>
+
+using matrix::Matrix;
 
 namespace statsmodeling
 {
@@ -22,8 +27,11 @@ namespace statsmodeling
     class FitResult
     {
     public:
-        FitResult();
+        FitResult(Matrix params, bool has_const);
+        const std::string display() const;
     private:
+        std::optional<double> constant;
+        std::map<std::string, double> params;
     };
 
     // for doing operations on columns or rows or whatever

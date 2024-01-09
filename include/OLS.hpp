@@ -12,7 +12,7 @@ namespace statsmodeling
     {
     public:
         OLS(bool add_const = true);
-        const FitResult fit(Matrix& X, Matrix& y) const;
+        const FitResult fit(Matrix& X, Matrix& y);
     private:
         ModelStatus status;
         bool use_const;

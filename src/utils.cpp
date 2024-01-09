@@ -1,10 +1,37 @@
 #include "utils.hpp"
-
 namespace statsmodeling
 {
-    FitResult::FitResult()
+    FitResult::FitResult(Matrix params, bool has_const)
     {
+        const size_t first_row_assert = 0;
+        if (has_const)
+            constant = params[first_row_assert][0];
+        else constant = std::nullopt;
 
+        if (params.get_dim().rows > 1) throw;
+        for (size_t i = has_const; i < params[first_row_assert].size(); i++) {
+            std::stringstream ss;
+            ss << "B" << (i + (1 - has_const));
+            this->params.insert(std::pair<std::string, double>(ss.str(), params[first_row_assert][i - has_const]));
+        }
+    }
+
+    const std::string FitResult::display() const
+    {
+        std::stringstream ss;
+        // print out the constant
+        ss << "B0: ";
+        if (constant.has_value())
+            ss << constant.value();
+        else ss << "NULL";
+        ss << "\n";
+
+        // other params
+        for (const auto& item : params) {
+            ss << item.first << ": " << item.second << "\n";
+        }
+
+        return ss.str();
     }
 
     const std::vector<double> map(double (*f)(double), std::vector<double> &v)

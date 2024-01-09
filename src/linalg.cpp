@@ -187,7 +187,7 @@ namespace matrix
         return mat * lhs;
     }
 
-    const Matrix Matrix::transpose() const
+    const Matrix Matrix::T() const
     {
         auto dimensions = get_dim();
         auto c = matrix::from_zeroes(dimensions.cols, dimensions.rows);
@@ -202,7 +202,7 @@ namespace matrix
         return c;
     }
 
-    const Matrix Matrix::inverse() const
+    const Matrix Matrix::inv() const
     {
         auto dimensions = get_dim();
         if (dimensions.rows != dimensions.cols) {

@@ -29,8 +29,8 @@ namespace matrix
         const Matrix operator+(const Matrix &rhs) const;
         const Matrix operator-(const Matrix &rhs) const;
         const Matrix operator*(double rhs) const;
-        const Matrix transpose() const;
-        const Matrix inverse() const;
+        const Matrix T() const;
+        const Matrix inv() const;
         bool operator==(const Matrix &rhs) const;
         const std::vector<double> &operator[](int64_t index) const;
         const std::vector<double> &operator[](size_t index) const;

@@ -26,8 +26,10 @@ int main(void)
         { 3 }
     });
 
-    auto reg = OLS(true);
-    reg.fit(X, y);
+    auto reg = OLS(false);
+    auto result = reg.fit(X, y);
+
+    std::cout << result.display() << std::endl;
 
     return EXIT_SUCCESS;
 }

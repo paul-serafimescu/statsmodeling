@@ -1,5 +1,6 @@
 #include "OLS.hpp"
 
+#include <iostream>
 using matrix::Matrix;
 
 namespace statsmodeling
@@ -10,11 +11,12 @@ namespace statsmodeling
         status = ModelStatus::INITIALIZED;
     }
 
-    const FitResult OLS::fit(Matrix& X, Matrix& y) const
+    const FitResult OLS::fit(Matrix& X, Matrix& y)
     {
         auto Xs = use_const ? X.augment_left(1.0) : X; 
-        auto Xt = Xs.transpose();
-        auto result =  (Xt * Xs).inverse() * Xt * y;
-        return FitResult(); // TODO
+        auto Xt = Xs.T();
+        auto result =  (Xt * Xs).inv() * Xt * y;
+        status = ModelStatus::FITTED;
+        return FitResult(result.T(), use_const);
     }
 };
