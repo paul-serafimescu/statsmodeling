@@ -1,5 +1,4 @@
 #include <iostream>
-#include <assert.h>
 
 #include "linalg.hpp"
 #include "OLS.hpp"

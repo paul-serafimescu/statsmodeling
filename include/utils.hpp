@@ -29,6 +29,7 @@ namespace statsmodeling
     public:
         FitResult(Matrix params, bool has_const);
         const std::string display() const;
+        double get_param(std::string param) const;
     private:
         std::optional<double> constant;
         std::map<std::string, double> params;

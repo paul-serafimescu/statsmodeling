@@ -16,6 +16,11 @@ namespace statsmodeling
         }
     }
 
+    double FitResult::get_param(std::string param) const
+    {
+        return param == "const" ? constant.value_or(0) : params.at(param);
+    }
+
     const std::string FitResult::display() const
     {
         std::stringstream ss;
@@ -34,40 +39,43 @@ namespace statsmodeling
         return ss.str();
     }
 
-    const std::vector<double> map(double (*f)(double), std::vector<double> &v)
+    namespace utils
     {
-        auto c = v;
-        #pragma omp parallel for schedule(static)
-        for (size_t i = 0; i < c.size(); i++) {
-            c[i] = f(c[i]);
+        const std::vector<double> map(double (*f)(double), std::vector<double> &v)
+        {
+            auto c = v;
+            #pragma omp parallel for schedule(static)
+            for (size_t i = 0; i < c.size(); i++) {
+                c[i] = f(c[i]);
+            }
+
+            return c;
         }
 
-        return c;
-    }
-
-    const std::vector<double> log(std::vector<double> &v)
-    {
-        return map(std::log, v);
-    }
-
-    const std::vector<double> sqrt(std::vector<double> &v)
-    {
-        return map(std::sqrt, v);
-    }
-
-    const std::vector<double> exp(std::vector<double> &v)
-    {
-        return map(std::exp, v);
-    }
-
-    const std::vector<double> pow(std::vector<double> &v, int64_t p)
-    {
-        auto c = v;
-        #pragma omp parallel for schedule(static)
-        for (size_t i = 0; i < c.size(); i++) {
-            c[i] = std::pow(c[i], p);
+        const std::vector<double> log(std::vector<double> &v)
+        {
+            return map(std::log, v);
         }
 
-        return c;
-    }
+        const std::vector<double> sqrt(std::vector<double> &v)
+        {
+            return map(std::sqrt, v);
+        }
+
+        const std::vector<double> exp(std::vector<double> &v)
+        {
+            return map(std::exp, v);
+        }
+
+        const std::vector<double> pow(std::vector<double> &v, int64_t p)
+        {
+            auto c = v;
+            #pragma omp parallel for schedule(static)
+            for (size_t i = 0; i < c.size(); i++) {
+                c[i] = std::pow(c[i], p);
+            }
+
+            return c;
+        }
+    };
 };
