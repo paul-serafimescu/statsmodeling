@@ -8,11 +8,11 @@ namespace statsmodeling
             constant = params[first_row_assert][0];
         else constant = std::nullopt;
 
-        if (params.get_dim().rows > 1) throw;
+        if (params.get_dim().rows > 1) throw "creating fitresult";
         for (size_t i = has_const; i < params[first_row_assert].size(); i++) {
             std::stringstream ss;
             ss << "B" << (i + (1 - has_const));
-            this->params.insert(std::pair<std::string, double>(ss.str(), params[first_row_assert][i - has_const]));
+            this->params.insert(std::pair<std::string, double>(ss.str(), params[first_row_assert][i]));
         }
     }
 

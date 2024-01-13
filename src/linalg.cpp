@@ -206,7 +206,7 @@ namespace matrix
     {
         auto dimensions = get_dim();
         if (dimensions.rows != dimensions.cols) {
-            throw; // figure out later
+            throw "inverting"; // figure out later
         }
 
         const size_t N = dimensions.rows;
@@ -217,7 +217,7 @@ namespace matrix
 
         // Gauss-Jordan Elimination
         for (size_t i = 0; i < N; i++) {
-            if (a[i][i] == 0.0) throw; // inversion not possible
+            if (a[i][i] == 0.0) throw "gauss-jordan"; // inversion not possible
             // #pragma omp parallel for schedule(guided)
             for (size_t j = 0; j < N; j++) {
                 if (i != j) {
@@ -245,7 +245,7 @@ namespace matrix
     {
         auto dim = get_dim();
         if (dim != rhs.get_dim()) {
-            throw; // figure this out later
+            throw "adding matrices"; // figure this out later
         }
 
         auto c = matrix::from_zeroes(dim);
@@ -264,7 +264,7 @@ namespace matrix
     {
         auto dim = get_dim();
         if (dim != rhs.get_dim()) {
-            throw; // figure this out later
+            throw "subtracting matrices"; // figure this out later
         }
 
         auto c = matrix::from_zeroes(dim);
