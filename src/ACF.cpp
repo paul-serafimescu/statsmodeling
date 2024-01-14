@@ -55,12 +55,12 @@ namespace statsmodeling
         #pragma omp parallel for schedule(guided)
         for (const auto& j : std::views::iota(0UL, T)) {
             auto numerator = 0.0;
-            for (size_t t = j; t < T; t++) {
+            for (const auto& t : std::views::iota(j, T)) {
                 numerator += (timeseries[t] - u) * (timeseries[t - j] - u);
             }
 
             auto denominator = 0.0;
-            for (size_t t = 0; t < T; t++) {
+            for (const auto& t : std::views::iota(0UL, T)) {
                 denominator += pow(timeseries[t] - u, 2);
             }
 
