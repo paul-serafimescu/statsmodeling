@@ -77,5 +77,10 @@ namespace statsmodeling
 
             return c;
         }
+
+        double mean(const std::vector<double> &v)
+        {
+            return std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+        }
     };
 };

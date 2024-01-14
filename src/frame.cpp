@@ -12,6 +12,10 @@ namespace frame
         std::fstream f;
         f.open(filename, std::ios::in);
 
+        if (!f.is_open()) {
+            throw "could not open file";
+        }
+
         // to store the body of the csv in matrix form
         std::vector<std::vector<double>> content;
 
@@ -52,6 +56,8 @@ namespace frame
         frame.columns = cols;
         frame.data = Matrix(content);
         frame.dataT = frame.data.T();
+
+        f.close();
 
         return frame;
     }

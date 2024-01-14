@@ -19,7 +19,7 @@ add_subdirectory(googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 # Define your test sources
-set(TEST_SOURCES test_OLS.cpp)
+set(TEST_SOURCES test_OLS.cpp test_ACF.cpp)
 
 # Add the test executable
 add_executable(runUnitTests ${TEST_SOURCES})

@@ -6,8 +6,9 @@
 #include <optional>
 #include <map>
 #include <omp.h>
+#include <functional>
 
-#include <linalg.hpp>
+#include "linalg.hpp"
 
 using matrix::Matrix;
 
@@ -35,7 +36,6 @@ namespace statsmodeling
         std::map<std::string, double> params;
     };
 
-
     namespace utils
     {
         // for doing operations on columns or rows or whatever
@@ -44,6 +44,9 @@ namespace statsmodeling
         const std::vector<double> sqrt(std::vector<double> &v);
         const std::vector<double> exp(std::vector<double> &v);
         const std::vector<double> pow(std::vector<double> &v, int64_t p);
+
+        double mean(const std::vector<double> &v);
+        // maybe add reduce?
 
         template<typename T>
         bool is_number(const std::string& s)

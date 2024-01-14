@@ -1,5 +1,7 @@
 #include <linalg.hpp>
 
+#include <iostream>
+
 namespace matrix
 {
     const MatrixDim Matrix::get_dim() const
@@ -27,7 +29,7 @@ namespace matrix
      * @param N number of rows
      * @param M number of columns
      * @param Z range of values [-Z, Z]
-     * @return Matrix<int64_t> 
+     * @return `Matrix<int64_t>`
      */
     const Matrix from_random(size_t N, size_t M, double Z)
     {
@@ -218,7 +220,7 @@ namespace matrix
         // Gauss-Jordan Elimination
         for (size_t i = 0; i < N; i++) {
             if (a[i][i] == 0.0) throw "gauss-jordan"; // inversion not possible
-            // #pragma omp parallel for schedule(guided)
+            #pragma omp parallel for schedule(guided)
             for (size_t j = 0; j < N; j++) {
                 if (i != j) {
                     double r = a[j][i] / a[i][i];

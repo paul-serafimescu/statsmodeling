@@ -1,10 +1,16 @@
 #include <gtest/gtest.h>
-#include <iostream>
 
 #include "linalg.hpp"
 #include "OLS.hpp"
+#include "frame.hpp"
+
+#include <filesystem>
 
 using statsmodeling::OLS;
+
+namespace fs = std::filesystem;
+
+const fs::path CSV_PATH = fs::path("test/csv");
 
 // ensure OLS slope estimates with constant term are correct
 TEST(OLS, CorrectFitWithConstant) {
@@ -72,6 +78,25 @@ TEST(OLS, CorrectFitResultDisplay) {
     auto result = reg.fit(X, y);
 
     std::string correctOutput = "B0: NULL\nB1: 1.22667\nB2: 1.06667\n";
+
+    EXPECT_EQ(correctOutput, result.display());
+}
+
+// ensure the csv data fit outputs and display string are correct
+TEST(OLS, CorrectFitFromCsv) {
+    fs::path csv_path = fs::current_path() / CSV_PATH / fs::path("ols_data.csv");
+    auto df = frame::from_csv(csv_path.c_str());
+
+    auto y = df["target"];
+    auto X = df[{ "x1", "x2" }];
+
+    auto reg = OLS(false);
+    auto result = reg.fit(X, y);
+
+    EXPECT_NEAR(result.get_param("B1"), 1, 1e-9);
+    EXPECT_NEAR(result.get_param("B2"), 1, 1e-9);
+
+    std::string correctOutput = "B0: NULL\nB1: 1\nB2: 1\n";
 
     EXPECT_EQ(correctOutput, result.display());
 }
