@@ -78,6 +78,24 @@ namespace statsmodeling
             return c;
         }
 
+        const std::vector<double> shift(std::vector<double> v, size_t n)
+        {
+            std::vector<double> result(v.size() - n);
+            std::copy(v.begin() + n, v.end(), result.begin());
+            return result;
+        }
+
+        const std::vector<double> slice(std::vector<double> v, size_t l, size_t r)
+        {
+            if (r < l) {
+                throw "invalid bounds";
+            }
+
+            std::vector<double> result(r - l);
+            std::copy(v.begin() + l, v.begin() + r, result.begin());
+            return result;
+        }
+
         double mean(const std::vector<double> &v)
         {
             return std::accumulate(v.begin(), v.end(), 0.0) / v.size();

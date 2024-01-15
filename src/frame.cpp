@@ -120,4 +120,13 @@ namespace frame
 
         return Matrix(cols).T();
     }
+
+    void Frame::add_column(const std::string& new_col_name, const Matrix& new_col)
+    {
+        columns.push_back(new_col_name);
+        auto data_dim = data.get_dim();
+        auto dataT_dim = dataT.get_dim();
+
+        std::cout << data_dim.rows << " " << data_dim.cols << std::endl;
+    }
 };

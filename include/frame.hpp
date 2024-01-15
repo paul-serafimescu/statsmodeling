@@ -25,6 +25,7 @@ namespace frame
         const std::string display() const;
         const Matrix operator[](std::string index) const;
         const Matrix operator[](std::initializer_list<std::string> indices) const;
+        void add_column(const std::string& new_col_name, const Matrix& new_col);
     };
 
     extern Frame from_csv(const char *filename);

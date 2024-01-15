@@ -45,6 +45,10 @@ namespace statsmodeling
         const std::vector<double> exp(std::vector<double> &v);
         const std::vector<double> pow(std::vector<double> &v, int64_t p);
 
+        // for manipulating data shape
+        const std::vector<double> shift(std::vector<double> v, size_t n);
+        const std::vector<double> slice(std::vector<double> v, size_t l, size_t r);
+
         double mean(const std::vector<double> &v);
         // maybe add reduce?
 
