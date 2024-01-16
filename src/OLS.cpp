@@ -17,6 +17,6 @@ namespace statsmodeling
         auto Xt = Xs.T();
         auto result =  (Xt * Xs).inv() * Xt * y;
         status = ModelStatus::FITTED;
-        return FitResult(result.T(), use_const);
+        return FitResult(result.T(), X, y, use_const);
     }
 };

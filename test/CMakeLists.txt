@@ -9,6 +9,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 # include parent source
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src)
 
+# include python
+include_directories(${Python_INCLUDE_DIRS})
+
 file(GLOB PROJECT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cpp")
 add_library(statsmodeling_lib STATIC ${PROJECT_SOURCES})
 
@@ -30,7 +33,8 @@ target_link_libraries(runUnitTests gtest gtest_main statsmodeling_lib)
 # Link the test executable against the project library if there is one
 # If your project's source files are included directly in the main CMakeLists and not in a separate library,
 # you would need to specify them here again or refactor your CMake to create a library target.
-# target_link_libraries(runUnitTests your_project_library)
+
+target_link_libraries(runUnitTests ${Python_LIBRARIES})
 
 # Add the test definitions
 add_test(NAME unitTests COMMAND runUnitTests)

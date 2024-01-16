@@ -19,7 +19,19 @@ namespace matrix
         return (rows != rhs.rows) || (cols != rhs.cols);
     }
 
-    Matrix::Matrix(std::vector<std::vector<double>> c) {
+    std::ostream& operator<<(std::ostream& stream, const MatrixDim& dim)
+    {
+        stream << "(" << dim.rows << ", " << dim.cols << ")";
+        return stream;
+    }
+
+    Matrix::Matrix()
+    {
+        _cols = {};
+    }
+
+    Matrix::Matrix(std::vector<std::vector<double>> c)
+    {
         _cols = c;
     }
 

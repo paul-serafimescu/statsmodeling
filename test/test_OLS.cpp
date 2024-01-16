@@ -100,3 +100,16 @@ TEST(OLS, CorrectFitFromCsv) {
 
     EXPECT_EQ(correctOutput, result.display());
 }
+
+TEST(OLS, CorrectPlotFromCsv) {
+    fs::path csv_path = fs::current_path() / CSV_PATH / fs::path("ols_data_1d.csv");
+    auto df = frame::from_csv(csv_path.c_str());
+
+    auto y = df["target"];
+    auto X = df[{ "x1" }];
+
+    auto reg = OLS();
+    auto result = reg.fit(X, y);
+
+    result.plot(); 
+}

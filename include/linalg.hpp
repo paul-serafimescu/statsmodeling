@@ -17,6 +17,7 @@ namespace matrix
 
         bool operator==(const MatrixDim &rhs) const;
         bool operator!=(const MatrixDim &rhs) const;
+        friend std::ostream& operator<< (std::ostream& stream, const MatrixDim& dim);
     };
 
     class Matrix
@@ -25,6 +26,7 @@ namespace matrix
         std::vector<std::vector<double>> _cols;
     public:
         Matrix(std::vector<std::vector<double>> c);
+        Matrix();
         const Matrix operator*(const Matrix &rhs) const;
         const Matrix operator+(const Matrix &rhs) const;
         const Matrix operator-(const Matrix &rhs) const;

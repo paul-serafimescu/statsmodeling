@@ -21,8 +21,5 @@ TEST(OLS, CorrectPACFFromCsv) {
 
     auto pacf = PACF(y);
     auto partial_autocorrelations = pacf.fit();
-
-    std::cout << partial_autocorrelations.to_string() << std::endl;
-
     // come up with test cases for this somehow idk
 }
